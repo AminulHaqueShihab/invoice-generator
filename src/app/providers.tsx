@@ -1,7 +1,26 @@
 'use client';
+import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
+import { CacheProvider } from '@chakra-ui/next-js';
+import { FC } from 'react';
+import { Provider } from 'react-redux';
+import store from '@/store/store';
+import { theme } from '@/theme/theme';
 
-import { ChakraProvider } from '@chakra-ui/react';
+type ProvidersProps = {
+	children: React.ReactNode;
+};
 
-export function Providers({ children }: { children: React.ReactNode }) {
-	return <ChakraProvider>{children}</ChakraProvider>;
-}
+const Providers: FC<ProvidersProps> = ({ children }) => {
+	return (
+		<CacheProvider>
+			<Provider store={store}>
+				<ChakraProvider theme={theme}>
+					<ColorModeScript initialColorMode={theme.config.initialColorMode} />
+					{children}
+				</ChakraProvider>
+			</Provider>
+		</CacheProvider>
+	);
+};
+
+export default Providers;
